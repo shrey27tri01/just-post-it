@@ -3,32 +3,54 @@
 {% block body %}
     {% if user.is_authenticated %}
         <!-- User is authenticated -->
+        <br><br><br>
         <form action="/create/" method="POST">
             {% csrf_token %}
-            <textarea name="tweet_content"></textarea>
-            <button autofocus>Post</button>
+            <textarea name="tweet_content" class="post-textarea" rows="7" cols="40"></textarea>
+            <br>
+            <div class="wrapper">
+              <button autofocus class="post-button btn btn-success">Post</button>
+            </div>
         </form>
         <br><br>
-        My tweets:
+        <div class="my-tweets-heading">
+          My posts:
+        </div>
+        <br>
         {% for tweet in page %}
-        <div class="tweet-content">
+        <div class="tweet-content card text-center">
+            <br>
             <span class="tweetid d-none">{{ tweet.id }}</span>
-            <a href="{% url 'profile' tweet.user %}">
+            <a href="{% url 'profile' tweet.user %}" class="card-title user">
               {{tweet.user}}
             </a>
-            posted on {{tweet.timestamp}} :
+            <span class="timestamp card-subtitle mb-2 text-muted">{{tweet.timestamp}}</span>
             <span class="edit-content">
-              <span class="tweet-content">{{ tweet.content }}</span>
+              <span class="tweet-main-content">{{ tweet.content }}</span>
+              <br><br>
               {% if user.username == tweet.user.username %}
-                <button class="edit-button">Edit</button>
+                <button class="edit-button btn btn-secondary">Edit</button>
               {% endif %}
             </span>
-            <br><br><br>
+            <br>
           </div>
+          <br>
         {% endfor %}
         {% include 'network/paginator.html' with page=page %}
         <script type="text/javascript" src="/static/network/editTweet.js"></script>
     {% else %}
-        User is not authenticated
+        <div class="unauthenticated-message">User is not authenticated</div>
     {% endif %}
+    <script type="text/javascript">
+      document.addEventListener('DOMContentLoaded', () => {
+        document.querySelector('.post-button').onclick = (event) => { 
+          const text = document.querySelector('.post-textarea').value;
+          if (text.length === 0) {
+            event.preventDefault();
+            alert("You can't post nothing!");
+            return;
+          }
+        };
+      });
+    </script>
 {% endblock %}

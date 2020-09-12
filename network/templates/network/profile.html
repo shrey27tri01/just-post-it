@@ -1,24 +1,36 @@
 {% extends "network/layout.html" %}
 
 {% block body %}
-    This is the profile for {{ username }}
+<br><br>
+    <div class="wrapper">
+        <span class="heading">Profile for <strong>{{ username }}</strong></span>
+    </div>
+    
     <br><br>
-    Followers: {{ followerCount }}
+    <div class="wrapper">       
+        <span class="count">Followers: {{ followerCount }}</span>
+    </div>
     <br>
-    Following: {{ followingCount }}
+    <div class="wrapper">
+        <span class="count">Following: {{ followingCount }}</span>
+    </div>
     <br><br>
     {% if isFollowing == False %}
         {% if user.username != username %}
             <form action="{% url 'profile' username %}" method="POST">
                 {% csrf_token %}
-                <button class="but">Follow</button> 
+                <div class="wrapper">
+                    <button class="but post-button btn btn-success">Follow</button> 
+                </div>
             </form>
         {% endif %}
     {% else %}
         {% if user.username != username %}
             <form action="{% url 'profile' username %}" method="POST">
                 {% csrf_token %}
-                <button class="but">Unfollow</button> 
+                <div class="wrapper">
+                    <button class="but post-button btn btn-danger">Unfollow</button> 
+                </div> 
             </form>
         {% endif %}
     {% endif %}
@@ -29,7 +41,11 @@
     </script>
     <br><br>
     {% for tweet in usertweets %}
-        {{ tweet.content }}, posted on {{ tweet.timestamp }}
+    <div class="card text-center">
+        <br>
+        <div class="card-text tweet-main-content">{{ tweet.content }}</div> posted on {{ tweet.timestamp }}
+        <br><br>
+    </div>
         <br>
     {% endfor %}
 {% endblock %}

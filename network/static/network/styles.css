@@ -1,0 +1,47 @@
+.unauthenticated-message {
+    font-size: 50px;
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.post-textarea {
+    width: 70%;
+    display: block; 
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.wrapper {
+    text-align: center;
+}
+
+.my-tweets-heading {
+    font-size: 30px;
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.user {
+    font-size: 25px;
+}
+
+.tweet-main-content {
+    font-size: 30px;
+}
+
+.new-content {
+    font-size: 30px;
+}
+
+.heading, .count {
+    font-size: 30px;
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.count {
+    font-size: 20px;
+}

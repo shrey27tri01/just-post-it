@@ -3,39 +3,47 @@
 {% block body %}
   {% if user.is_authenticated %}
     <!-- User is authenticated -->
-    <form action="/create/" method="POST">
-        {% csrf_token %}
-        <textarea name="tweet_content"></textarea>
-        <button autofocus>Post</button>
-    </form>
+    <br><br><br>
+        <form action="/create/" method="POST">
+            {% csrf_token %}
+            <textarea name="tweet_content" class="post-textarea" rows="7" cols="40"></textarea>
+            <br>
+            <div class="wrapper">
+              <button autofocus class="post-button btn btn-success">Post</button>
+            </div>
+        </form>
 
     <br><br><br>
 
     {% for tweet in page %}
-      <div class="tweet-content">
+      <div class="tweet-content card text-center">
+        <br>
         <span class="tweetid d-none">{{ tweet.id }}</span>
-        <a href="{% url 'profile' tweet.user %}">
+        <a href="{% url 'profile' tweet.user %}" class="tweet-username card-title user">
           {{tweet.user}}
         </a>
-        posted on {{tweet.timestamp}} :
+        <span class="timestamp card-subtitle mb-2 text-muted">{{tweet.timestamp}}</span>
         <span class="edit-content">
-          <span class="tweet-content">{{ tweet.content }}</span>
+          <span class="tweet-main-content">{{ tweet.content }}</span>
           {% if user.username == tweet.user.username %}
-            <button class="edit-button">Edit</button>
+            <br><br>
+            <button class="edit-button btn btn-secondary">Edit</button>
           {% else %}
-            {% if currentuser in tweet.likes.all %}              
-              <button class="button">Unlike</button>
+            {% if currentuser in tweet.likes.all %} 
+              <br><br>             
+              <button class="button btn btn-primary">Unlike</button>
             {% else %}
-              <button class="button">Like</button>
+              <br><br>
+              <button class="button btn btn-primary">Like</button>
             {% endif %}
           {% endif %}
         </span>
-        <span>{{ tweet.likes.count }} likes</span>
-        <br><br><br>
+        <span class="likes-count">{{ tweet.likes.count }}</span> likes
+        <br><br>
       </div>
 
     {% endfor %}
-
+      <br>
     {% include 'network/paginator.html' with page=page %}
 
 

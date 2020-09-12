@@ -29,10 +29,11 @@ document.addEventListener('DOMContentLoaded', () => {
           var newItem = document.createElement('span');
           newItem.innerHTML = `<textarea class='new-content'>${contentToBeEdited}</textarea>`;
           editContent.replaceChild(newItem, editContent.children[0]);
-          editContent.children[1].innerHTML = "Save";
-          var saveButton = editContent.children[1];
+          // console.log(editContent.children[3]);
+          editContent.children[3].innerHTML = "Save";
+          var saveButton = editContent.children[3];
           saveButton.onclick = () => {
-            var tweetId = saveButton.parentElement.parentElement.children[0].innerHTML;
+            var tweetId = saveButton.parentElement.parentElement.children[1].innerHTML;
             // console.log(tweetId);
             var newContent = document.querySelector('.new-content').value;
             // console.log(`Your new content is: ${newContent}`);
@@ -54,10 +55,10 @@ document.addEventListener('DOMContentLoaded', () => {
             }
             request.onload = () => {
               // const response = request.responseText;
-              // console.log(request.status);
+              console.log(request.status);
               if (request.status === 200) {
-                newItem.innerHTML = `${newContent}`;
-                editContent.children[1].innerHTML = "Edit";
+                newItem.innerHTML = `<span class='new-content'>${newContent}</span>`;
+                editContent.children[3].innerHTML = "Edit";
                 // console.log(editButton);
               } else {
                 alert("An error occurred. Please try again.");

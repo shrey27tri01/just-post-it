@@ -17,7 +17,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     var buttons = document.querySelectorAll(".button");
     buttons.forEach(button => {
-        var tweetId = button.parentElement.parentElement.children[0].innerHTML;
+        var tweetId = button.parentElement.parentElement.children[1].innerHTML;
         button.onclick = () => {
             // const jsonAction = JSON.stringify({"action": action});
             const request = new XMLHttpRequest();
@@ -34,7 +34,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (request.status === 200) {
                     const action = JSON.parse(request.response)["action"];
                     const count = JSON.parse(request.response)["likeCount"];
-                    button.parentElement.parentElement.children[3].innerHTML = count;
+                    button.parentElement.parentElement.children[5].innerHTML = count;
                     // console.log(action);
                     if (action === "liked") {
                         button.innerHTML = "Unlike";
