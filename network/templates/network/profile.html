@@ -1,0 +1,35 @@
+{% extends "network/layout.html" %}
+
+{% block body %}
+    This is the profile for {{ username }}
+    <br><br>
+    Followers: {{ followerCount }}
+    <br>
+    Following: {{ followingCount }}
+    <br><br>
+    {% if isFollowing == False %}
+        {% if user.username != username %}
+            <form action="{% url 'profile' username %}" method="POST">
+                {% csrf_token %}
+                <button class="but">Follow</button> 
+            </form>
+        {% endif %}
+    {% else %}
+        {% if user.username != username %}
+            <form action="{% url 'profile' username %}" method="POST">
+                {% csrf_token %}
+                <button class="but">Unfollow</button> 
+            </form>
+        {% endif %}
+    {% endif %}
+    <script>
+        document.querySelector('.but').onclick = () => {
+            window.location.href="{% url 'profile' username %}";
+        };
+    </script>
+    <br><br>
+    {% for tweet in usertweets %}
+        {{ tweet.content }}, posted on {{ tweet.timestamp }}
+        <br>
+    {% endfor %}
+{% endblock %}

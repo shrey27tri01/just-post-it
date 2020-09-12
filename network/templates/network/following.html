@@ -1,0 +1,38 @@
+{% extends "network/layout.html" %}
+
+{% block body %}
+    {% if user.is_authenticated %}
+        <!-- User is authenticated -->
+        <form action="/create/" method="POST">
+            {% csrf_token %}
+            <textarea name="tweet_content"></textarea>
+            <button autofocus>Post</button>
+        </form>
+        {% for tweet in page %}
+        <div class="tweet-content">
+            <span class="tweetid d-none">{{ tweet.id }}</span>
+            <a href="{% url 'profile' tweet.user %}">
+              {{tweet.user}}
+            </a>
+            posted on {{tweet.timestamp}} :
+            <span class="edit-content">
+              <span class="tweet-content">{{ tweet.content }}</span>
+              
+                {% if currentuser in tweet.likes.all %}              
+                  <button class="button">Unlike</button>
+                {% else %}
+                  <button class="button">Like</button>
+                {% endif %}
+
+            </span>
+            <span>{{ tweet.likes.count }} likes</span>
+            <br><br><br>
+          </div>
+    
+        {% endfor %}
+        {% include 'network/paginator.html' with page=page %}
+        <script type="text/javascript" src="/static/network/likeTweet.js"></script>
+    {% else %}
+        User is not authenticated
+    {% endif %}
+{% endblock %}
