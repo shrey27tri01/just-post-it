@@ -9,6 +9,8 @@ More functionalities to come soon!!
 To run locally, run the following commands:
 - ```git clone https://github.com/shrey27tri01/just-post-it.git```
 - ```cd just-post-it```
-- Activate virtual environment following the guide [here](https://packaging.python.org/guides/installing-using-pip-and-virtual-environments/#creating-a-virtual-environment)
+- Activate a virtual environment following the guide [here](https://packaging.python.org/guides/installing-using-pip-and-virtual-environments/#creating-a-virtual-environment)
 - ```python(3) manage.py runserver```
+
+A demo of the working app can be found [here!](https://www.youtube.com/watch?v=GHQIh9GpDmI)
 
