@@ -4,6 +4,8 @@ just-post-it is a very basic twitter-like social network application made in dja
 
 Current functionalities are: posting, liking, unliking, following and unfollowing users, viewing all posts made ever, viewing posts made by the user you follow, and editing already made posts.
 
+More functionalities to come soon!!
+
 To run locally, run the following commands:
 - ```git clone https://github.com/shrey27tri01/just-post-it.git```
 - ```cd just-post-it```
