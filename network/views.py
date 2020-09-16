@@ -32,8 +32,8 @@ def index(request):
 def tweetSubmit(request):
     if request.method == 'POST':
         content = request.POST.get("tweet_content")
-        print(content)
-        print(request.user.username)
+        # print(content)
+        # print(request.user.username)
         username = request.user.username
         newTweet = Tweet(user=User.objects.filter(username=username).first(), content=content)
         newTweet.save()
@@ -90,41 +90,47 @@ def following(request):
     return render(request, "network/following.html", context)
 
 
-def userProfile(request, username):
-    viewedUser = User.objects.filter(username=username).first()
-    viewedUserTweets = Tweet.objects.filter(user=viewedUser).order_by('-timestamp')
-    viewedUserfollowers = viewedUser.profile.followers.all()
-    viewedUserFollowerNames = []
-    for user in viewedUserfollowers:
-        viewedUserFollowerNames.append(user.username)
-    viewedUserfollowerCount = viewedUserfollowers.count()
-    viewedUserFollowing = viewedUser.following.all()
-    # print(viewedUserFollowerNames)
-    # print(request.user.username)
-    viewedUserFollowingCount = viewedUser.following.all().count()
-    # print(viewedUser.username, request.user.username)
-    if request.user.username in viewedUserFollowerNames:
-        isFollowing = True
-    else:
-        isFollowing = False
-    if request.method == "POST":
-        # print(f"Follow buton is clicked by {request.user.username} to follow {username}")
-        if isFollowing == True:
-            viewedUser.profile.followers.remove(request.user)
-            isFollowing = False
-            viewedUserfollowerCount -= 1
-        else:
-            viewedUser.profile.followers.add(request.user)
-            isFollowing = True
-            viewedUserfollowerCount += 1
-    context = {
-        "usertweets": viewedUserTweets,
-        "username": username,
-        "followerCount": viewedUserfollowerCount,
-        "followingCount": viewedUserFollowingCount,
-        "isFollowing": isFollowing
-    }
-    return render(request, "network/profile.html", context)
+# def userProfileRandom(request, username):
+#     user = User.objects.filter(username=request.user.username).first()
+#     viewedUser = User.objects.filter(username=username).first()
+#     viewedUserTweets = Tweet.objects.filter(user=viewedUser).order_by('-timestamp')
+#     viewedUserfollowers = viewedUser.profile.followers.all()
+#     viewedUserFollowerNames = []
+#     for user in viewedUserfollowers:
+#         viewedUserFollowerNames.append(user.username)
+#     viewedUserfollowerCount = viewedUserfollowers.count()
+#     viewedUserFollowing = viewedUser.following.all()
+#     # print(viewedUserFollowerNames)
+#     # print(request.user.username)
+#     viewedUserFollowingCount = viewedUser.following.all().count()
+#     # print(viewedUser.username, request.user.username)
+#     if request.user.username in viewedUserFollowerNames:
+#         isFollowing = True
+#     else:
+#         isFollowing = False
+#     if user == viewedUser:
+#         data = {
+#             "response": "Permission Denied"
+#         }
+#         return JsonResponse(data, status=403)
+#     if request.method == "POST":
+#         # print(f"Follow buton is clicked by {request.user.username} to follow {username}")
+#         if isFollowing == True:
+#             viewedUser.profile.followers.remove(request.user)
+#             isFollowing = False
+#             viewedUserfollowerCount -= 1
+#         else:
+#             viewedUser.profile.followers.add(request.user)
+#             isFollowing = True
+#             viewedUserfollowerCount += 1
+#     context = {
+#         "usertweets": viewedUserTweets,
+#         "username": username,
+#         "followerCount": viewedUserfollowerCount,
+#         "followingCount": viewedUserFollowingCount,
+#         "isFollowing": isFollowing
+#     }
+#     return render(request, "network/profile.html", context)
 
 def edit(request, tweetId):
     user = User.objects.filter(username=request.user.username).first()
@@ -199,6 +205,62 @@ def like(request, tweetId):
         "response": "Method not allowed"
     }
     return JsonResponse(data, status=405)
+
+def userProfile(request, username):
+    currentUser = User.objects.filter(username=request.user.username).first()
+    viewedUser = User.objects.filter(username=username).first()
+    viewedUserFollowers = viewedUser.profile.followers.all()
+    viewedUserFollowersCount = viewedUser.profile.followers.count()
+    viewedUserFollowingCount = viewedUser.following.count()
+    viewedUserTweets = viewedUser.tweets.all()
+    if currentUser in viewedUserFollowers:
+        isFollowing = True
+    else:
+        isFollowing = False
+    if request.method == 'POST' and currentUser == viewedUser:
+        data = {
+            "response": "Permission Denied"
+        }
+        return JsonResponse(data, status=403)
+    if request.method == 'POST' and request.is_ajax():
+        if currentUser in viewedUserFollowers:
+            try:
+                viewedUser.profile.followers.remove(currentUser)
+                viewedUser.save()
+                data = {
+                    "response": "success",
+                    "followerCount": viewedUser.profile.followers.count(),
+                    "action": "unfollowed"
+                }
+                return JsonResponse(data, status=200)
+            except Exception as e:
+                data = {
+                    "response": e
+                }
+                return JsonResponse(data, status=400)
+        elif currentUser not in viewedUserFollowers:
+            try:
+                viewedUser.profile.followers.add(currentUser)
+                viewedUser.save()
+                data = {
+                    "response": "success",
+                    "followerCount": viewedUser.profile.followers.count(),
+                    "action": "followed"
+                }
+                return JsonResponse(data, status=200)
+            except Exception as e:
+                data = {
+                    "response": e
+                }
+                return JsonResponse(data, status=400)
+    context = {
+        "usertweets": viewedUserTweets,
+        "username": username,
+        "followerCount": viewedUserFollowersCount,
+        "followingCount": viewedUserFollowingCount,
+        "isFollowing": isFollowing
+    }
+    return render(request, "network/profile.html", context)
 
 def login_view(request):
     if request.method == "POST":

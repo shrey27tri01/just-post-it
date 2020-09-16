@@ -3,12 +3,12 @@
 {% block body %}
 <br><br>
     <div class="wrapper">
-        <span class="heading">Profile for <strong>{{ username }}</strong></span>
+        <span class="heading">Profile for <strong class="username">{{ username }}</strong></span>
     </div>
     
     <br><br>
     <div class="wrapper">       
-        <span class="count">Followers: {{ followerCount }}</span>
+        <span class="count">Followers: <span class="followerCount">{{ followerCount }}</span></span>
     </div>
     <br>
     <div class="wrapper">
@@ -34,11 +34,6 @@
             </form>
         {% endif %}
     {% endif %}
-    <script>
-        document.querySelector('.but').onclick = () => {
-            window.location.href="{% url 'profile' username %}";
-        };
-    </script>
     <br><br>
     {% for tweet in usertweets %}
     <div class="card text-center">
@@ -48,4 +43,5 @@
     </div>
         <br>
     {% endfor %}
+    <script type="text/javascript" src="/static/network/follow.js"></script>
 {% endblock %}
