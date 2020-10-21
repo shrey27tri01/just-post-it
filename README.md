@@ -13,5 +13,6 @@ To run locally, run the following commands:
 - ```pip(3) install requirements.txt```
 - ```python(3) manage.py runserver```
 
-A demo of the working app can be found [here!](https://www.youtube.com/watch?v=GHQIh9GpDmI)
+A demo of the working app can be found [here](https://www.youtube.com/watch?v=GHQIh9GpDmI)!     
+The live website is [here](https://just-post-it.herokuapp.com/)!
 
